@@ -14,10 +14,9 @@ using namespace std;
  */
 void Editor::loop()
 {
+    bool first = true;
     string input="";
     getline(cin,input);
-
-    {
         while (input.compare("q") != 0 ) //input is not "q"
         {
             string theRestOfTheString = input.substr(1); //input from index 1 until the end
@@ -77,14 +76,13 @@ void Editor::loop()
                     }
                     else
                     {
-                        cout << "?";
+                        cout << "?\n";
                     }
                     break;
             }
-        }
 
-        getline(cin,input);
-    }
+            getline(cin,input);
+        }
 }
 
 
