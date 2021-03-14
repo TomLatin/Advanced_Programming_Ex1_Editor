@@ -16,6 +16,8 @@ private:
     //----Fields----
     vector<string> document;
     int currentLine;
+    int numberOfTotalLines;
+    void printCurrentLine();
 
     //----private methods----
     void checkValidIndex();
@@ -23,7 +25,7 @@ private:
 public:
 
     //----Constructor----
-    Document() { currentLine = 0; }
+    Document() { currentLine = 0, numberOfTotalLines=0; }
 
     Document(string fileName)
     {
@@ -36,9 +38,11 @@ public:
         {
             this->currentLine= -1;
             string line;
-            while(getline(fileStream,line) && line!=""){
+            while(getline(fileStream,line) && line!="")
+            {
                 document.push_back(line);
                 this->currentLine++;
+                this->numberOfTotalLines++;
             }
         }
     }
