@@ -13,14 +13,16 @@ using namespace std;
 class Document {
 private:
 
-    //Fields
+    //----Fields----
     vector<string> document;
     int currentLine;
+
+    //----private methods----
     void checkValidIndex();
 
 public:
 
-    //Constructor
+    //----Constructor----
     Document() { currentLine = 0; }
 
     Document(string fileName)
@@ -40,6 +42,20 @@ public:
             }
         }
     }
+
+    //----public methods----
+    void advanceToLine(string str);
+    void backToLine(string str);
+    void append(string str);
+    void insert(string str);
+    void replaceLines(string str);
+    void searchText(string str);
+    void replaceWord(string oldWord, string newWord);
+    void writeToFile(string nameOfFile);
+    void goToLine(string numOfLine);
+    void lastLine();
+    void deleteLine();
+    void joinLines();
 
 };
 
