@@ -25,7 +25,7 @@ private:
 public:
 
     //----Constructor----
-    Document() { currentLine = 0, numberOfTotalLines=0; }
+    Document() { currentLine = -1, numberOfTotalLines=0; }
 
     Document(string fileName)
     {
@@ -50,8 +50,8 @@ public:
     //----public methods----
     void advanceToLine(string str);
     void backToLine(string str);
-    void append(string str);
-    void insert(string str);
+    void append();
+    void insert();
     void replaceLines(string str);
     void searchText(string str);
     void replaceWord(string oldWord, string newWord);

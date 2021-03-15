@@ -36,11 +36,11 @@ void Editor::loop()
                     break;
 
                 case 'a': // Add one or more rows after the current row.
-                    this->document->append(theRestOfTheString);
+                    this->document->append();
                     break;
 
                 case 'i': // Add one or more rows before the current row
-                    this->document->insert(theRestOfTheString);
+                    this->document->insert();
                     break;
 
                 case 'c': // Replace the current row with one or more rows.
