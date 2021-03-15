@@ -52,7 +52,7 @@ public:
     void backToLine(string str);
     void append();
     void insert();
-    void replaceLines(string str);
+    void replaceLines();
     void searchText(string str);
     void replaceWord(string oldWord, string newWord);
     void writeToFile(string nameOfFile);

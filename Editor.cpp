@@ -44,7 +44,7 @@ void Editor::loop()
                     break;
 
                 case 'c': // Replace the current row with one or more rows.
-                    this->document->replaceLines(theRestOfTheString);
+                    this->document->replaceLines();
                     break;
 
                 case 'd': // Delete the current line.
