@@ -5,12 +5,6 @@
 #include "Document.h"
 #include <regex>
 
-//----private methods----
-void Document::checkValidIndex()
-{
-
-}
-
 void Document::printCurrentLine()
 {
     cout<<this->document.at(this->currentLine)<<"\n";
@@ -181,6 +175,23 @@ void Document::searchText(string str)
 
 void Document::replaceWord(string oldWord, string newWord)
 {
+    regex toFine (oldWord);
+    bool flag = true;
+    for (int i=0; i< this->numberOfTotalLines & flag; i++)
+    {
+        string original = this->document.at(i);
+        if(regex_replace(this->document.at(i),toFine,newWord,std::regex_constants::format_first_only).compare(original) != 0)
+        {
+            this->document.at(i) = regex_replace(this->document.at(i),toFine,newWord,std::regex_constants::format_first_only);
+            this->currentLine = i;
+            printCurrentLine();
+            flag = false;
+        }
+    }
+    if(flag)
+    {
+        cout<<"?\n";
+    }
 
 }
 
@@ -199,7 +210,13 @@ void Document::joinLines()
 
 void Document::writeToFile(string nameOfFile)
 {
+    ofstream file(nameOfFile);
+    for(int i = 0; i< this->numberOfTotalLines; i++)
+    {
+        file<< this->document.at(i)+"\n";
+    }
 
+    file.close();
 }
 
 void Document::goToLine(string numOfLine)

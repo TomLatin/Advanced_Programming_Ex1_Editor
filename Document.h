@@ -19,9 +19,6 @@ private:
     int numberOfTotalLines;
     void printCurrentLine();
 
-    //----private methods----
-    void checkValidIndex();
-
 public:
 
     //----Constructor----

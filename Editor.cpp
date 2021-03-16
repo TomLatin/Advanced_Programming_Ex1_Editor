@@ -85,29 +85,6 @@ void Editor::loop()
         }
 }
 
-
-///**
-// * A function that is responsible for checking that the more complex expressions we receive from the user are correct
-// * @param input from user
-// * @return true
-// */
-//bool Editor::checkInput(string input) {
-//    //Statement of regular expressions
-//    regex number(R"(\d)"); // number like 4 or 80 etc.
-//    regex advanceToLine("(\\+)[[:digit:]]+)"); // +number, like: +4 or +70 etc.
-//    regex backToLine("(\\-)[[:digit:]]+)"); // -number, like: -4 or -70 etc.
-//    regex searchText(R"(/\w+/?)");
-//    regex replaceWord(R"(s/\w+/\w+/?)");
-//
-//    //Checking fit
-//    if(regex_match(input, number)) return true;
-//    else if(regex_match(input, advanceToLine)) return true;
-//    else if(regex_match(input, backToLine)) return true;
-//    else if(regex_match(input, searchText)) return true;
-//    else if(regex_match(input, replaceWord)) return true;
-//    else return false;
-//}
-
 //----private methods----
 
 /**
@@ -175,14 +152,11 @@ string  Editor::getNewWord(string str)
         {
             toReturn+=str[i];
         }
-        else // str[i]=='/'
+        else if(str[i] =='/')
         {
             count++;
-            if(count == 2)
-            {
-                flag = false;
-            }
         }
+
     }
     return toReturn;
 }
