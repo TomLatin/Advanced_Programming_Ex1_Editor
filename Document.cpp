@@ -5,22 +5,9 @@
 #include "Document.h"
 #include <regex>
 
-
-void Document::printCurrentLine()
+//----private methods----
+void Document::updateCurrentLine(int wantedLine)
 {
-    cout<<this->document.at(this->currentLine)<<"\n";
-}
-
-//----public methods----
-/**
- * Move x lines forward, the current line is now x.
- * If the line exceeds the size, print "?".
- * @param str - Which represents a number.
- */
-void Document::advanceToLine(string str)
-{
-    int numOfJump = stoi(str);
-    int wantedLine= currentLine+numOfJump;
     if(wantedLine>=0 && wantedLine<=this->numberOfTotalLines-1)
     {
         this->currentLine = wantedLine;
@@ -32,6 +19,45 @@ void Document::advanceToLine(string str)
     }
 }
 
+vector<string> Document::getInput()
+{
+    string input=""; //Insert the string
+    vector<string> anotherVector; // All the strings the user want to add
+
+    //get input
+    getline(cin,input);
+    while (input!=".")
+    {
+        anotherVector.push_back(input);
+        getline(cin,input);
+    }
+
+    return anotherVector;
+}
+
+
+
+//----public methods----
+/**
+ * Print the current line
+ */
+void Document::printCurrentLine()
+{
+    cout<<this->document.at(this->currentLine)<<"\n";
+}
+
+/**
+ * Move x lines forward, the current line is now x.
+ * If the line exceeds the size, print "?".
+ * @param str - Which represents a number.
+ */
+void Document::advanceToLine(string str)
+{
+    int numOfJump = stoi(str);
+    int wantedLine= currentLine+numOfJump;
+    updateCurrentLine(wantedLine);
+}
+
 /**
  * Go back x lines forward, the current line is now x.
  * If the line exceeds the size, print "?".
@@ -41,14 +67,7 @@ void Document::backToLine(string str)
 {
     int numOfJump = stoi(str);
     int wantedLine = currentLine - numOfJump;
-    if (wantedLine >= 0 && wantedLine <= this->numberOfTotalLines - 1) {
-        this->currentLine = wantedLine;
-        printCurrentLine();
-    }
-    else
-    {
-        cout << "?\n";
-    }
+    updateCurrentLine(wantedLine);
 }
 
 /**
@@ -72,16 +91,7 @@ void Document::lastLine()
  */
 void Document::append()
 {
-    string input=""; //Insert the string
-    vector<string> anotherVector; // All the strings the user want to add
-
-    //get input
-    getline(cin,input);
-    while (input!=".")
-    {
-        anotherVector.push_back(input);
-        getline(cin,input);
-    }
+    vector<string> anotherVector = getInput(); // All the strings the user want to add
 
     //add the strings to the document vector
     this->document.insert(this->document.begin()+this->currentLine+1,anotherVector.begin(),anotherVector.end());
@@ -96,17 +106,7 @@ void Document::append()
  */
 void Document::insert()
 {
-    //local verbals
-    string input=""; //Insert the string
-    vector<string> anotherVector; // All the strings the user want to add
-
-    //get input
-    getline(cin,input);
-    while (input!=".")
-    {
-        anotherVector.push_back(input);
-        getline(cin,input);
-    }
+    vector<string> anotherVector = getInput(); // All the strings the user want to add
 
     //add the strings to the document vector
     std::vector<string>::iterator it;
@@ -134,16 +134,7 @@ void Document::insert()
  */
 void Document::replaceLines()
 {
-    string input=""; //Insert the string
-    vector<string> anotherVector; // All the strings the user want to add
-
-    //get input
-    getline(cin,input);
-    while (input!=".")
-    {
-        anotherVector.push_back(input);
-        getline(cin,input);
-    }
+    vector<string> anotherVector = getInput(); // All the strings the user want to add
 
     //add the strings to the document vector
     this->document.insert(this->document.begin()+this->currentLine,anotherVector.begin(),anotherVector.end());
@@ -244,7 +235,6 @@ void Document::replaceWord(string oldWord, string newWord)
     {
         cout<<"?\n";
     }
-
 }
 
 /**

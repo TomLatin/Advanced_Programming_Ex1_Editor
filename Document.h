@@ -18,6 +18,10 @@ private:
     int currentLine;
     int numberOfTotalLines;
 
+    //----private methods----
+    void updateCurrentLine(int wantedLine);
+    vector<string> getInput();
+
 public:
 
     //----Constructor----
