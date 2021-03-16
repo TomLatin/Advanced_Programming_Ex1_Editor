@@ -3,11 +3,10 @@
 //
 #include "Editor.h"
 #include <iostream>
-#include <regex>
-
 using namespace std;
 
 //----public methods----
+
 /**
  *A function that is responsible for waiting for input from the user until he enters q, and activating the correct
  * functions of the document according to the input
@@ -68,8 +67,8 @@ void Editor::loop()
                 case 'w': // w file - Write the document in the file.
                     this->document->writeToFile( input.substr(2));
                     break;
-                case 'p':
-                    this->document->print();
+                case 'p': //p - print the current line
+                    this->document->printCurrentLine();
                     break;
                 default:
                     if(isNum(input)) //Go to line x
@@ -140,7 +139,7 @@ string Editor::getOldWord(string str)
 
 /**
  * get the word new from this statement: s/old/new
- * @param str In the following structure: s/old/new
+ * @param str In the following structure: old/new
  * @return Filter of the word new
  */
 string  Editor::getNewWord(string str)

@@ -5,12 +5,18 @@
 #include "Document.h"
 #include <regex>
 
+
 void Document::printCurrentLine()
 {
     cout<<this->document.at(this->currentLine)<<"\n";
 }
 
 //----public methods----
+/**
+ * Move x lines forward, the current line is now x.
+ * If the line exceeds the size, print "?".
+ * @param str - Which represents a number.
+ */
 void Document::advanceToLine(string str)
 {
     int numOfJump = stoi(str);
@@ -18,7 +24,7 @@ void Document::advanceToLine(string str)
     if(wantedLine>=0 && wantedLine<=this->numberOfTotalLines-1)
     {
         this->currentLine = wantedLine;
-//        printCurrentLine();
+        printCurrentLine();
     }
     else
     {
@@ -26,27 +32,28 @@ void Document::advanceToLine(string str)
     }
 }
 
+/**
+ * Go back x lines forward, the current line is now x.
+ * If the line exceeds the size, print "?".
+ * @param str - Which represents a number
+ */
 void Document::backToLine(string str)
 {
     int numOfJump = stoi(str);
     int wantedLine = currentLine - numOfJump;
     if (wantedLine >= 0 && wantedLine <= this->numberOfTotalLines - 1) {
         this->currentLine = wantedLine;
-//        printCurrentLine();
+        printCurrentLine();
     }
     else
     {
         cout << "?\n";
     }
 }
-void Document::print()
-{
-    cout<<"Pos:"<<currentLine<<"                 "<<"vec size:"<< this->document.size()<<endl;
-    for(int i=0;i< this->numberOfTotalLines;i++){
-        cout<< this->document.at(i)<<endl;
-    }
-}
 
+/**
+ * Go to the last line, the current line is now the last.
+ */
 void Document::lastLine()
 {
     if(this->currentLine == -1)
@@ -56,13 +63,15 @@ void Document::lastLine()
     else
     {
         this->currentLine = this->numberOfTotalLines-1;
-//        printCurrentLine();
+        printCurrentLine();
     }
 }
 
+/**
+ * Add one or more rows after the current row.
+ */
 void Document::append()
 {
-    //local verbals
     string input=""; //Insert the string
     vector<string> anotherVector; // All the strings the user want to add
 
@@ -76,10 +85,15 @@ void Document::append()
 
     //add the strings to the document vector
     this->document.insert(this->document.begin()+this->currentLine+1,anotherVector.begin(),anotherVector.end());
+
+    //update currentLine and numberOfTotalLines
     this->currentLine = this->currentLine+anotherVector.size();
     this->numberOfTotalLines = this->numberOfTotalLines+anotherVector.size();
 }
 
+/**
+ * Add one or more rows before the current row.
+ */
 void Document::insert()
 {
     //local verbals
@@ -105,12 +119,19 @@ void Document::insert()
         it = this->document.begin()+this->currentLine;
     }
     this->document.insert(it,anotherVector.begin(),anotherVector.end());
-    this->currentLine = this->currentLine+anotherVector.size()-1;
+
+    //update currentLine
     if(currentLine<0) currentLine =0;
     else if(currentLine>document.size()-1) currentLine =document.size()-1;
+    else this->currentLine = this->currentLine+anotherVector.size()-1;
+
+    //update numberOfTotalLines
     this->numberOfTotalLines = this->numberOfTotalLines+anotherVector.size();
 }
 
+/**
+ * Replace the current row with one or more rows.
+ */
 void Document::replaceLines()
 {
     string input=""; //Insert the string
@@ -127,11 +148,16 @@ void Document::replaceLines()
     //add the strings to the document vector
     this->document.insert(this->document.begin()+this->currentLine,anotherVector.begin(),anotherVector.end());
     this->document.erase(this->document.begin()+currentLine+anotherVector.size());
+
+    //update currentLine and numberOfTotalLines
     this->currentLine = this->currentLine-1+anotherVector.size();
-    printCurrentLine();
     this->numberOfTotalLines = this->numberOfTotalLines-1+anotherVector.size();
+    printCurrentLine();
 }
 
+/**
+ * Delete the current line.
+ */
 void Document::deleteLine()
 {
     if(currentLine >= 0)
@@ -146,11 +172,19 @@ void Document::deleteLine()
     }
 }
 
+/**
+ * Look forward starting from the next line (after the current one) that contains the text string.
+ * If not found, go to row 1 and continue searching forward to (inclusive) to the current row.
+ * The first row found in the search becomes the current row.
+ * @param str - Text to look for in a document
+ */
 void Document::searchText(string str)
 {
     bool flag= true;
     regex toFine(str);
     smatch sm;
+
+    //look in [currentLine+1, end] -> If we found we were done
     if(this->currentLine+1 <= this->numberOfTotalLines-1)
     {
 
@@ -160,12 +194,14 @@ void Document::searchText(string str)
             if (regex_search(line,sm,toFine) == true)
             {
                 currentLine=i;
-//                printCurrentLine();
+                printCurrentLine();
                 flag = false;
             }
         }
     }
-    if(flag  || this->currentLine+1 > this->numberOfTotalLines-1)
+
+    // We did not find or there is no next row because we started from the last row, so we will search in  [0,currentLine]
+    if(flag || this->currentLine+1 > this->numberOfTotalLines-1)
     {
         for(int i = 0; i < this->currentLine+1 && flag; i++)
         {
@@ -173,17 +209,22 @@ void Document::searchText(string str)
             if (regex_search(line,sm,toFine) == true)
             {
                 currentLine=i;
-//                printCurrentLine();
+                printCurrentLine();
                 flag = false;
             }
         }
     }
-    if(flag)
+    if(flag) //not found at all the document
     {
         cout << "?\n";
     }
 }
 
+/**
+ * Replace the first instance of the old string with the new string in the current row.
+ * @param oldWord
+ * @param newWord
+ */
 void Document::replaceWord(string oldWord, string newWord)
 {
     regex toFine (oldWord);
@@ -195,7 +236,7 @@ void Document::replaceWord(string oldWord, string newWord)
         {
             this->document.at(i) = regex_replace(this->document.at(i),toFine,newWord,std::regex_constants::format_first_only);
             this->currentLine = i;
-//            printCurrentLine();
+            printCurrentLine();
             flag = false;
         }
     }
@@ -206,10 +247,13 @@ void Document::replaceWord(string oldWord, string newWord)
 
 }
 
+/**
+ * Connect the current line with the line following it.
+ */
 void Document::joinLines()
 {
 
-    if(currentLine!=numberOfTotalLines-1)
+    if(currentLine!=numberOfTotalLines-1) //not the last line
     {
         replace(this->document.begin()+currentLine,this->document.begin()+currentLine+1,this->document.at(currentLine),this->document.at(currentLine)+this->document.at(currentLine+1));
         this->document.erase(this->document.begin()+currentLine+1);
@@ -221,6 +265,10 @@ void Document::joinLines()
     }
 }
 
+/**
+ * Write the document to the file.
+ * @param nameOfFile
+ */
 void Document::writeToFile(string nameOfFile)
 {
     ofstream file(nameOfFile);
@@ -232,13 +280,17 @@ void Document::writeToFile(string nameOfFile)
     file.close();
 }
 
+/**
+ * Updating currentLine
+ * @param numOfLine
+ */
 void Document::goToLine(string numOfLine)
 {
     int currLineTemp = stoi(numOfLine);
     try
     {
         this->currentLine = currLineTemp-1;
-//        printCurrentLine();
+        printCurrentLine();
     }
     catch (const out_of_range& err)
     {

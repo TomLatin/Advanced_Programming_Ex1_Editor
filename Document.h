@@ -17,8 +17,6 @@ private:
     vector<string> document;
     int currentLine;
     int numberOfTotalLines;
-    void printCurrentLine();
-
 
 public:
 
@@ -58,7 +56,7 @@ public:
     void lastLine();
     void deleteLine();
     void joinLines();
-    void print();
+    void printCurrentLine();
 
 };
 
