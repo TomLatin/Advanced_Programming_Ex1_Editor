@@ -68,7 +68,9 @@ void Editor::loop()
                 case 'w': // w file - Write the document in the file.
                     this->document->writeToFile( input.substr(2));
                     break;
-
+                case 'p':
+                    this->document->print();
+                    break;
                 default:
                     if(isNum(input)) //Go to line x
                     {

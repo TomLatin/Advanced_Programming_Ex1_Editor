@@ -18,7 +18,7 @@ void Document::advanceToLine(string str)
     if(wantedLine>=0 && wantedLine<=this->numberOfTotalLines-1)
     {
         this->currentLine = wantedLine;
-        printCurrentLine();
+//        printCurrentLine();
     }
     else
     {
@@ -32,10 +32,18 @@ void Document::backToLine(string str)
     int wantedLine = currentLine - numOfJump;
     if (wantedLine >= 0 && wantedLine <= this->numberOfTotalLines - 1) {
         this->currentLine = wantedLine;
-        printCurrentLine();
-    } else {
+//        printCurrentLine();
+    }
+    else
+    {
         cout << "?\n";
-
+    }
+}
+void Document::print()
+{
+    cout<<"Pos:"<<currentLine<<"                 "<<"vec size:"<< this->document.size()<<endl;
+    for(int i=0;i< this->numberOfTotalLines;i++){
+        cout<< this->document.at(i)<<endl;
     }
 }
 
@@ -48,7 +56,7 @@ void Document::lastLine()
     else
     {
         this->currentLine = this->numberOfTotalLines-1;
-        printCurrentLine();
+//        printCurrentLine();
     }
 }
 
@@ -88,16 +96,18 @@ void Document::insert()
 
     //add the strings to the document vector
     std::vector<string>::iterator it;
-    if(this->currentLine == -1)
+    if(this->currentLine == -1||this->currentLine == 0)
     {
         it = this->document.begin();
     }
     else
     {
-        it = this->document.begin()+this->currentLine-1;
+        it = this->document.begin()+this->currentLine;
     }
     this->document.insert(it,anotherVector.begin(),anotherVector.end());
-    this->currentLine = this->currentLine+anotherVector.size();
+    this->currentLine = this->currentLine+anotherVector.size()-1;
+    if(currentLine<0) currentLine =0;
+    else if(currentLine>document.size()-1) currentLine =document.size()-1;
     this->numberOfTotalLines = this->numberOfTotalLines+anotherVector.size();
 }
 
@@ -118,6 +128,7 @@ void Document::replaceLines()
     this->document.insert(this->document.begin()+this->currentLine,anotherVector.begin(),anotherVector.end());
     this->document.erase(this->document.begin()+currentLine+anotherVector.size());
     this->currentLine = this->currentLine-1+anotherVector.size();
+    printCurrentLine();
     this->numberOfTotalLines = this->numberOfTotalLines-1+anotherVector.size();
 }
 
@@ -149,7 +160,7 @@ void Document::searchText(string str)
             if (regex_search(line,sm,toFine) == true)
             {
                 currentLine=i;
-                printCurrentLine();
+//                printCurrentLine();
                 flag = false;
             }
         }
@@ -162,7 +173,7 @@ void Document::searchText(string str)
             if (regex_search(line,sm,toFine) == true)
             {
                 currentLine=i;
-                printCurrentLine();
+//                printCurrentLine();
                 flag = false;
             }
         }
@@ -184,7 +195,7 @@ void Document::replaceWord(string oldWord, string newWord)
         {
             this->document.at(i) = regex_replace(this->document.at(i),toFine,newWord,std::regex_constants::format_first_only);
             this->currentLine = i;
-            printCurrentLine();
+//            printCurrentLine();
             flag = false;
         }
     }
@@ -197,10 +208,12 @@ void Document::replaceWord(string oldWord, string newWord)
 
 void Document::joinLines()
 {
+
     if(currentLine!=numberOfTotalLines-1)
     {
         replace(this->document.begin()+currentLine,this->document.begin()+currentLine+1,this->document.at(currentLine),this->document.at(currentLine)+this->document.at(currentLine+1));
         this->document.erase(this->document.begin()+currentLine+1);
+        numberOfTotalLines--;
     }
     else
     {
@@ -213,7 +226,7 @@ void Document::writeToFile(string nameOfFile)
     ofstream file(nameOfFile);
     for(int i = 0; i< this->numberOfTotalLines; i++)
     {
-        file<< this->document.at(i)+"\n";
+        file<< this->document.at(i)<<endl;
     }
 
     file.close();
@@ -225,7 +238,7 @@ void Document::goToLine(string numOfLine)
     try
     {
         this->currentLine = currLineTemp-1;
-        printCurrentLine();
+//        printCurrentLine();
     }
     catch (const out_of_range& err)
     {

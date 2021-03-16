@@ -5,6 +5,10 @@
 #include <regex>
 int main(int argc, char **argv) {
 
+//    string path = "C:/Users/TOMLA/CLionProjects/ed/pome.txt";
+//    Editor edir(path);
+//    edir.loop();
+
     switch (argc) {
         case 1:
         {

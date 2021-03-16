@@ -19,6 +19,7 @@ private:
     int numberOfTotalLines;
     void printCurrentLine();
 
+
 public:
 
     //----Constructor----
@@ -57,6 +58,7 @@ public:
     void lastLine();
     void deleteLine();
     void joinLines();
+    void print();
 
 };
 
